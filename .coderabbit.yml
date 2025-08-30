@@ -1,0 +1,69 @@
+version: 1
+
+include:
+  - backend/**
+  - figma-mcp-app/apps/**
+  - figma-mcp-app/shared/**
+
+exclude:
+  - '**/node_modules/**'
+  - '**/dist/**'
+  - '**/build/**'
+  - '**/.turbo/**'
+  - '**/.next/**'
+  - '**/*.lock'
+  - '**/*.png'
+  - '**/*.jpg'
+  - '**/*.svg'
+
+review:
+  goals:
+    - Ensure strict TypeScript safety and explicit public APIs
+    - Prevent unnecessary React re-renders; prefer memoization where needed
+    - Enforce NestJS best practices (providers, modules, DTO validation)
+    - Hardening: auth headers, RBAC checks, PII redaction, CSP, Helmet
+    - Observability: structured logs, correlation-id propagation, metrics
+    - Accessibility: ARIA labels, keyboard nav, contrast
+    - Microfrontend boundaries: no cross-app imports except via `shared/`
+  severity:
+    default: medium
+  suggestions:
+    max_per_file: 20
+    max_total: 200
+  commenting:
+    summary: true
+    annotate_changed_lines_only: true
+  file_routing:
+    - pattern: 'figma-mcp-app/apps/assistant/**'
+      label: 'area:assistant'
+    - pattern: 'figma-mcp-app/apps/incidents/**'
+      label: 'area:incidents'
+    - pattern: 'figma-mcp-app/apps/dashboards/**'
+      label: 'area:dashboards'
+    - pattern: 'figma-mcp-app/apps/playbooks/**'
+      label: 'area:playbooks'
+    - pattern: 'backend/**'
+      label: 'area:backend'
+
+rules:
+  typescript:
+    no_any: true
+    prefer_strict_null_checks: true
+    explicit_function_return_types: true
+  react:
+    avoid_inline_styles: true
+    memoize_heavy_components: true
+    deps_exhaustive: true
+  nestjs:
+    use_validation_pipe: true
+    controller_dto_types: true
+    avoid_business_logic_in_controllers: true
+  security:
+    check_auth_in_guards: true
+    forbid_leaking_auth_tokens: true
+    enforce_pii_redaction: true
+  observability:
+    require_correlation_id: true
+    prefer_structured_logging: true
+
+

@@ -1,0 +1,14 @@
+# Default owners
+* @your-org/platform-team
+
+# Microfrontends
+figma-mcp-app/apps/assistant/** @your-org/assistant-team
+figma-mcp-app/apps/incidents/** @your-org/incidents-team
+figma-mcp-app/apps/dashboards/** @your-org/dashboards-team
+figma-mcp-app/apps/playbooks/** @your-org/playbooks-team
+
+# Shared libs
+figma-mcp-app/shared/** @your-org/frontend-foundation
+
+# Backend
+backend/** @your-org/backend-team

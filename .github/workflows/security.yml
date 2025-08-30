@@ -1,0 +1,31 @@
+name: Security Scan
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start mock and backend (dev)
+        run: |
+          npm ci --prefix backend
+          npm ci --prefix server
+          nohup npm run start:dev --prefix backend &
+          nohup npm start --prefix server &
+          sleep 10
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.11.0
+        with:
+          target: 'http://localhost:3002/apply'
+          fail_action: false
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: report_html.html
+
